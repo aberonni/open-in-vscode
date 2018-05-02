@@ -1,0 +1,16 @@
+{
+  "name": "open-in-vscode",
+  "version": "1.0.0",
+  "description": "Open Github and Gitlab links in VSCode",
+  "scripts": {
+    "test": "eslint *.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0"
+  }
+}

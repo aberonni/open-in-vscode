@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+
+    <title>Settings - Open in VSCode</title>
+
+    <style>
+        form {
+            position: relative;
+            margin: 2rem 0;
+            border: .2rem solid #f8f9fa;
+            padding: 1.5rem;
+        }
+
+        h1,
+        form > *:not(:first-child) {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Open in VSCode</h1>
+
+        <form>
+            <h3>Settings</h3>
+
+            <div class="form-group">
+                <label for="basePath">Base path</label>
+                <input type="text" class="form-control" id="basePath" aria-describedby="basePathHelp">
+                <small id="basePathHelp" class="form-text text-muted">Full path to where you keep all your repositories locally.</small>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="insidersBuild">
+                <label class="form-check-label" for="insidersBuild">Are you using the Insiders Build?</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save settings</button>
+        </form>
+
+        <div class="alert alert-success alert-dismissible fade" role="alert">
+            Settings saved!
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+
+</html>

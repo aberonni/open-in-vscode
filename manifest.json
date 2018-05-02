@@ -1,0 +1,28 @@
+{
+    "manifest_version": 2,
+    "name": "Open in VSCode",
+    "version": "1.0.0",
+    "description": "Open Github and Gitlab links in VSCode",
+    "page_action": {
+        "default_icon": "icons/icon19.png",
+        "default_title": "Open in VSCode"
+    },
+    "author": "Domenico Gemoli",
+    "permissions": [
+        "contextMenus",
+        "storage"
+    ],
+    "background": {
+        "scripts": [
+            "contextmenu.js"
+        ]
+    },
+    "options_page": "options.html",
+    "homepage_url": "https://github.com/aberonni/open-in-vscode",
+    "offline_enabled": true,
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    }
+}
