@@ -46,19 +46,26 @@ function getVscodeLink({
 }
 
 function parseLink(linkUrl) {
-    const linkRegexp = /.+\/([^/]+)\/(blob|tree|raw)\/[^/]+\/([^#]*)(#L)?(.*)/;
+    const url = new URL(linkUrl);
+    const path = url.pathname;
 
-    if (!linkRegexp.test(linkUrl)) {
+    const pathRegexp = /.+\/([^/]+)\/(blob|tree)\/[^/]+\/(.*)/;
+
+    if (!pathRegexp.test(path)) {
         throw Error('Invalid link.');
     }
 
-    const linkInfo = linkRegexp.exec(linkUrl);
+    const pathInfo = pathRegexp.exec(path);
 
-    const repo = linkInfo[1];
-    const isFolder = linkInfo[2] === 'tree';
-    const file = linkInfo[3];
-    const lineHash = linkInfo[4];
-    const line = lineHash === '#L' ? linkInfo[5] : null;
+    const repo = pathInfo[1];
+    const isFolder = pathInfo[2] === 'tree';
+    const file = pathInfo[3];
+
+    let line;
+
+    if (url.hash.indexOf('#L') === 0) {
+        line = url.hash.substring(2);
+    }
 
     return {
         repo,
