@@ -3,6 +3,7 @@ function getOptions() {
         chrome.storage.sync.get({
             basePath: '',
             insidersBuild: false,
+            debug: false,
         }, (options) => {
             if (options.basePath === '') {
                 reject(new Error('Set options in the options page for this extension.'));
@@ -18,7 +19,7 @@ function getVscodeLink({
     repo, file, isFolder, line,
 }) {
     return getOptions()
-        .then(({ insidersBuild, basePath }) => {
+        .then(({ insidersBuild, basePath, debug }) => {
             let vscodeLink = insidersBuild
                 ? 'vscode-insiders'
                 : 'vscode';
@@ -41,44 +42,50 @@ function getVscodeLink({
                 vscodeLink += `:${line}:1`;
             }
 
+            if (debug) {
+                alert(`About to open link: ${vscodeLink}`);
+            }
+
             return vscodeLink;
         });
 }
 
 function parseLink(linkUrl) {
-    const url = new URL(linkUrl);
-    const path = url.pathname;
+    return new Promise((resolve, reject) => {
+        const url = new URL(linkUrl);
+        const path = url.pathname;
 
-    const pathRegexp = /.+\/([^/]+)\/(blob|tree)\/[^/]+\/(.*)/;
+        const pathRegexp = /.+\/([^/]+)\/(blob|tree)\/[^/]+\/(.*)/;
 
-    if (!pathRegexp.test(path)) {
-        throw Error('Invalid link.');
-    }
+        if (!pathRegexp.test(path)) {
+            reject(new Error(`Invalid link. Could not extract info from: ${path}.`));
+            return;
+        }
 
-    const pathInfo = pathRegexp.exec(path);
+        const pathInfo = pathRegexp.exec(path);
 
-    const repo = pathInfo[1];
-    const isFolder = pathInfo[2] === 'tree';
-    const file = pathInfo[3];
+        const repo = pathInfo[1];
+        const isFolder = pathInfo[2] === 'tree';
+        const file = pathInfo[3];
 
-    let line;
+        let line;
 
-    if (url.hash.indexOf('#L') === 0) {
-        line = url.hash.substring(2);
-    }
+        if (url.hash.indexOf('#L') === 0) {
+            line = url.hash.substring(2);
+        }
 
-    return {
-        repo,
-        file,
-        isFolder,
-        line,
-    };
+        resolve({
+            repo,
+            file,
+            isFolder,
+            line,
+        });
+    });
 }
 
 function openInVscode({ linkUrl }) {
-    const linkInfo = parseLink(linkUrl);
-
-    getVscodeLink(linkInfo)
+    parseLink(linkUrl)
+        .then(getVscodeLink)
         .then(window.open)
         .catch(alert);
 }

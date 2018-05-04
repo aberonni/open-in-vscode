@@ -1,12 +1,14 @@
 const defaultOptions = {
     basePath: '/usr/local/git',
     insidersBuild: false,
+    debug: false,
 };
 
 function restoreOptions() {
     chrome.storage.sync.get(defaultOptions, (options) => {
         document.getElementById('basePath').value = options.basePath;
         document.getElementById('insidersBuild').checked = options.insidersBuild;
+        document.getElementById('debug').checked = options.debug;
     });
 }
 
@@ -16,6 +18,7 @@ function saveOptions(event) {
     chrome.storage.sync.set({
         basePath: document.getElementById('basePath').value,
         insidersBuild: document.getElementById('insidersBuild').checked,
+        debug: document.getElementById('debug').checked,
     }, () => {
         // Update status to let user know options were saved.
         const status = document.querySelector('.alert');
