@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Open Github and Gitlab links in VSCode",
   "scripts": {
-    "test": "eslint *.js"
+    "test": "eslint **/*.js"
   },
   "keywords": [],
   "author": "",
