@@ -6,7 +6,7 @@
 
 ## Installation
 
-Just install from the Chrome Web Store. Once you have installed, make sure to configure the extension in the options page.
+Just [install from the Chrome Web Store](https://chrome.google.com/webstore/detail/open-in-vscode/pfakkjlkpobjeghlgipljkjmbgcanpji). Once you have installed, make sure to configure the extension in the options page.
 You can do this by right clicking on the "Open in VSCode" icon in the extensions bar on chrome, and then selecting "Options".
 
 ## Usage
