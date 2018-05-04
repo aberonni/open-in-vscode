@@ -1,5 +1,5 @@
 const defaultOptions = {
-    basePath: '/usr/local/git',
+    basePath: '',
     insidersBuild: false,
     debug: false,
 };
