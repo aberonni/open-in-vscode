@@ -62,12 +62,12 @@ function parseLink(linkUrl, selectionText, pageUrl) {
 
         if (isPR(url.pathname))  {
             const pullPathRegex = /.+\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
-            const pathInfo = pathRegexp.exec(path);
+            const pathInfo = pullPathRegex.exec(path);
             const repo = pathInfo[1];
             const isFolder = false
             const file = selectionText;
             let line = pageUrl.replace(linkUrl, "").replace("R", "").replace("L", "")
-            resolve(repo, file, isFolder,line)
+            resolve({repo, file, isFolder,line})
             return
         }
 
