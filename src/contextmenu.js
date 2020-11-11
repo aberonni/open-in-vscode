@@ -1,3 +1,5 @@
+const PULL_REQUEST_PATH_REGEXP = /.+\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
+
 function getOptions() {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get({
@@ -6,7 +8,7 @@ function getOptions() {
             debug: false,
         }, (options) => {
             if (options.basePath === '') {
-                reject(new Error('Set options in the options page for this extension.'));
+                reject(new Error('Looks like you haven\'t configured this extension yet. Visit the options page before using this extension. More information on the extension README.'));
                 return;
             }
 
@@ -51,8 +53,7 @@ function getVscodeLink({
 }
 
 function isPR(linkUrl) {
-    const pathRegexp = /.+\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
-    return pathRegexp.test(linkUrl)
+    return PULL_REQUEST_PATH_REGEXP.test(linkUrl);
 }
 
 function parseLink(linkUrl, selectionText, pageUrl) {
@@ -60,15 +61,22 @@ function parseLink(linkUrl, selectionText, pageUrl) {
         const url = new URL(linkUrl);
         const path = url.pathname;
 
-        if (isPR(url.pathname))  {
-            const pullPathRegex = /.+\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
-            const pathInfo = pullPathRegex.exec(path);
+        if (isPR(url.pathname)) {
+            const pathInfo = PULL_REQUEST_PATH_REGEXP.exec(path);
             const repo = pathInfo[1];
-            const isFolder = false
+            const isFolder = false;
             const file = selectionText;
-            let line = pageUrl.replace(linkUrl, "").replace("R", "").replace("L", "")
-            resolve({repo, file, isFolder,line})
-            return
+            let line = null;
+            if (pageUrl.includes(linkUrl)) {
+                line = pageUrl.replace(linkUrl, '').replace('R', '').replace('L', '');
+            }
+            resolve({
+                repo,
+                file,
+                isFolder,
+                line,
+            });
+            return;
         }
 
         const pathRegexp = /.+\/([^/]+)\/(blob|tree)\/[^/]+\/(.*)/;
@@ -99,7 +107,7 @@ function parseLink(linkUrl, selectionText, pageUrl) {
     });
 }
 
-function openInVscode({ linkUrl, selectionText, pageUrl}) {
+function openInVscode({ linkUrl, selectionText, pageUrl }) {
     parseLink(linkUrl, selectionText, pageUrl)
         .then(getVscodeLink)
         .then(window.open)
