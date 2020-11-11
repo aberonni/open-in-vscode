@@ -50,10 +50,26 @@ function getVscodeLink({
         });
 }
 
-function parseLink(linkUrl) {
+function isPR(linkUrl) {
+    const pathRegexp = /.+\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
+    return pathRegexp.test(linkUrl)
+}
+
+function parseLink(linkUrl, selectionText, pageUrl) {
     return new Promise((resolve, reject) => {
         const url = new URL(linkUrl);
         const path = url.pathname;
+
+        if (isPR(url.pathname))  {
+            const pullPathRegex = /.+\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
+            const pathInfo = pullPathRegex.exec(path);
+            const repo = pathInfo[1];
+            const isFolder = false
+            const file = selectionText;
+            let line = pageUrl.replace(linkUrl, "").replace("R", "").replace("L", "")
+            resolve({repo, file, isFolder,line})
+            return
+        }
 
         const pathRegexp = /.+\/([^/]+)\/(blob|tree)\/[^/]+\/(.*)/;
 
@@ -83,8 +99,8 @@ function parseLink(linkUrl) {
     });
 }
 
-function openInVscode({ linkUrl }) {
-    parseLink(linkUrl)
+function openInVscode({ linkUrl, selectionText, pageUrl}) {
+    parseLink(linkUrl, selectionText, pageUrl)
         .then(getVscodeLink)
         .then(window.open)
         .catch(alert);
