@@ -3,6 +3,7 @@ const PULL_REQUEST_PATH_REGEXP = /.+\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
 function getOptions() {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get({
+            remoteHost: '',
             basePath: '',
             insidersBuild: false,
             debug: false,
@@ -21,12 +22,15 @@ function getVscodeLink({
     repo, file, isFolder, line,
 }) {
     return getOptions()
-        .then(({ insidersBuild, basePath, debug }) => {
+        .then(({ insidersBuild, remoteHost, basePath, debug }) => {
             let vscodeLink = insidersBuild
                 ? 'vscode-insiders'
                 : 'vscode';
 
-            vscodeLink += '://file';
+            // vscode://vscode-remote/ssh-remote+[host]/[path/to/file]:[line]
+            // OR
+            // vscode://file/[path/to/file]:[line]
+            vscodeLink += (remoteHost != '') ? '://vscode-remote/ssh-remote+' + remoteHost : '://file';
 
             // windows paths don't start with slash
             if (basePath[0] !== '/') {
@@ -42,6 +46,10 @@ function getVscodeLink({
 
             if (line) {
                 vscodeLink += `:${line}:1`;
+            } else if (remoteHost != '') {
+                // vscode will open a new project without given a line number
+                // so has to at least go to first line here.
+                vscodeLink += `:0:1`;
             }
 
             if (debug) {
@@ -58,7 +66,7 @@ function isPR(linkUrl) {
 
 function parseLink(linkUrl, selectionText, pageUrl) {
     return new Promise((resolve, reject) => {
-        const url = new URL(linkUrl);
+        const url = new URL(linkUrl ? linkUrl : pageUrl);
         const path = url.pathname;
 
         if (isPR(url.pathname)) {
@@ -116,6 +124,6 @@ function openInVscode({ linkUrl, selectionText, pageUrl }) {
 
 chrome.contextMenus.create({
     title: 'Open in VSCode',
-    contexts: ['link'],
+    contexts: ['link', 'page'],
     onclick: openInVscode,
 });
