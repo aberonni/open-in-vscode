@@ -22,7 +22,12 @@ function getVscodeLink({
     repo, file, isFolder, line,
 }) {
     return getOptions()
-        .then(({ insidersBuild, remoteHost, basePath, debug }) => {
+        .then(({
+            insidersBuild,
+            remoteHost,
+            basePath, 
+            debug
+        }) => {
             let vscodeLink = insidersBuild
                 ? 'vscode-insiders'
                 : 'vscode';
@@ -30,7 +35,11 @@ function getVscodeLink({
             // vscode://vscode-remote/ssh-remote+[host]/[path/to/file]:[line]
             // OR
             // vscode://file/[path/to/file]:[line]
-            vscodeLink += (remoteHost != '') ? '://vscode-remote/ssh-remote+' + remoteHost : '://file';
+            if (remoteHost !== '') {
+                vscodeLink += `://vscode-remote/ssh-remote+${remoteHost}`;
+            } else {
+                vscodeLink += '://file';
+            }
 
             // windows paths don't start with slash
             if (basePath[0] !== '/') {
@@ -46,10 +55,10 @@ function getVscodeLink({
 
             if (line) {
                 vscodeLink += `:${line}:1`;
-            } else if (remoteHost != '') {
+            } else {
                 // vscode will open a new project without given a line number
-                // so has to at least go to first line here.
-                vscodeLink += `:0:1`;
+                // for remote project so has to at least go to first line here.
+                vscodeLink += ':0:1';
             }
 
             if (debug) {
@@ -66,7 +75,7 @@ function isPR(linkUrl) {
 
 function parseLink(linkUrl, selectionText, pageUrl) {
     return new Promise((resolve, reject) => {
-        const url = new URL(linkUrl ? linkUrl : pageUrl);
+        const url = new URL(linkUrl);
         const path = url.pathname;
 
         if (isPR(url.pathname)) {
@@ -124,6 +133,6 @@ function openInVscode({ linkUrl, selectionText, pageUrl }) {
 
 chrome.contextMenus.create({
     title: 'Open in VSCode',
-    contexts: ['link', 'page'],
+    contexts: ['link'],
     onclick: openInVscode,
 });
