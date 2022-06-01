@@ -11,9 +11,13 @@ You can do this by right clicking on the "Open in VSCode" icon in the extensions
 
 ## Usage
 
-Just right click on any link to a file and select "Open in VSCode".
-__The extension expects the repository you are browsing to already be cloned into the folder in the options page.__
-You can also click on line links to open the file to the specific file.
+__The extension expects the repository you are browsing to already be cloned into the "base path" that you must first define in the options page.__
+
+Use in one of three ways:
+
+- Right click on any link to a file and select "Open in VSCode". You can also click on line links to open the file to the specific file.
+- Right click anywhere on a page and select "Open in VSCode" to open the currently viewed file
+- Click on the extension icon in the toolbar to open the currently viewed file
 
 Tested with the following websites:
 

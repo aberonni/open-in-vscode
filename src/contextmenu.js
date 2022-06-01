@@ -9,7 +9,8 @@ function getOptions() {
             debug: false,
         }, (options) => {
             if (options.basePath === '') {
-                reject(new Error('Looks like you haven\'t configured this extension yet. Visit the options page before using this extension. More information on the extension README.'));
+                reject(new Error('Looks like you haven\'t configured this extension yet. You can find more information about this by visiting the extension\'s README page.'));
+                chrome.runtime.openOptionsPage();
                 return;
             }
 
@@ -75,7 +76,7 @@ function isPR(linkUrl) {
 
 function parseLink(linkUrl, selectionText, pageUrl) {
     return new Promise((resolve, reject) => {
-        const url = new URL(linkUrl);
+        const url = new URL(linkUrl ?? pageUrl);
         const path = url.pathname;
 
         if (isPR(url.pathname)) {
@@ -133,6 +134,10 @@ function openInVscode({ linkUrl, selectionText, pageUrl }) {
 
 chrome.contextMenus.create({
     title: 'Open in VSCode',
-    contexts: ['link'],
+    contexts: ['link', 'page'],
     onclick: openInVscode,
 });
+
+chrome.browserAction.onClicked.addListener((({ url }) => {
+    openInVscode({ linkUrl: url, pageUrl: url });
+}));
