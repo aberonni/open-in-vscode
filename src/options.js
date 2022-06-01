@@ -1,3 +1,5 @@
+/* global document */
+
 const defaultOptions = {
     remoteHost: '',
     basePath: '',

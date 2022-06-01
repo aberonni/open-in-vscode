@@ -8,7 +8,7 @@
         "chrome": true
     },
     "env": {
-        "browser": true
+        "serviceworker": true
     },
     "parserOptions": {
         "ecmaVersion": 2020
