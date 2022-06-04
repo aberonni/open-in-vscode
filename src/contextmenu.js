@@ -3,6 +3,7 @@ const PULL_REQUEST_PATH_REGEXP = /.+\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
 function getOptions() {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get({
+            remoteHost: '',
             basePath: '',
             insidersBuild: false,
             debug: false,
@@ -22,12 +23,24 @@ function getVscodeLink({
     repo, file, isFolder, line,
 }) {
     return getOptions()
-        .then(({ insidersBuild, basePath, debug }) => {
+        .then(({
+            insidersBuild,
+            remoteHost,
+            basePath, 
+            debug
+        }) => {
             let vscodeLink = insidersBuild
                 ? 'vscode-insiders'
                 : 'vscode';
 
-            vscodeLink += '://file';
+            // vscode://vscode-remote/ssh-remote+[host]/[path/to/file]:[line]
+            // OR
+            // vscode://file/[path/to/file]:[line]
+            if (remoteHost !== '') {
+                vscodeLink += `://vscode-remote/ssh-remote+${remoteHost}`;
+            } else {
+                vscodeLink += '://file';
+            }
 
             // windows paths don't start with slash
             if (basePath[0] !== '/') {
@@ -43,6 +56,10 @@ function getVscodeLink({
 
             if (line) {
                 vscodeLink += `:${line}:1`;
+            } else {
+                // vscode will open a new project without given a line number
+                // for remote project so has to at least go to first line here.
+                vscodeLink += ':0:1';
             }
 
             if (debug) {
