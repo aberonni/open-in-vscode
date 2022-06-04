@@ -26,8 +26,8 @@ function getVscodeLink({
         .then(({
             insidersBuild,
             remoteHost,
-            basePath, 
-            debug
+            basePath,
+            debug,
         }) => {
             let vscodeLink = insidersBuild
                 ? 'vscode-insiders'
@@ -57,8 +57,9 @@ function getVscodeLink({
             if (line) {
                 vscodeLink += `:${line}:1`;
             } else {
-                // vscode will open a new project without given a line number
-                // for remote project so has to at least go to first line here.
+                // We need a default especially for remote hosts
+                // because vscode will open a new project if we don't provide
+                // a line number for remote projects
                 vscodeLink += ':0:1';
             }
 
