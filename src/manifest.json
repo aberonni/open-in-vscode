@@ -1,9 +1,9 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Open in VSCode",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "description": "Open Github and Gitlab links in VSCode",
-    "browser_action": {
+    "action": {
         "default_icon": "icons/icon19.png",
         "default_title": "Open in VSCode"
     },
@@ -11,12 +11,11 @@
     "permissions": [
         "activeTab",
         "contextMenus",
+        "scripting",
         "storage"
     ],
     "background": {
-        "scripts": [
-            "contextmenu.js"
-        ]
+        "service_worker": "contextmenu.js"
     },
     "options_page": "options.html",
     "homepage_url": "https://github.com/aberonni/open-in-vscode",
