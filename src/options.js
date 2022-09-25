@@ -3,6 +3,7 @@
 const defaultOptions = {
     remoteHost: '',
     basePath: '',
+    basePathFormat: '{basePath}/{repoName}',
     insidersBuild: false,
     debug: false,
 };
@@ -11,6 +12,7 @@ function restoreOptions() {
     chrome.storage.sync.get(defaultOptions, (options) => {
         document.getElementById('remoteHost').value = options.remoteHost;
         document.getElementById('basePath').value = options.basePath;
+        document.getElementById('basePathFormat').value = options.basePathFormat;
         document.getElementById('insidersBuild').checked = options.insidersBuild;
         document.getElementById('debug').checked = options.debug;
     });
@@ -22,6 +24,7 @@ function saveOptions(event) {
     chrome.storage.sync.set({
         remoteHost: document.getElementById('remoteHost').value,
         basePath: document.getElementById('basePath').value,
+        basePathFormat: document.getElementById('basePathFormat').value,
         insidersBuild: document.getElementById('insidersBuild').checked,
         debug: document.getElementById('debug').checked,
     }, () => {

@@ -1,11 +1,11 @@
 {
     "manifest_version": 3,
-    "name": "Open in VSCode",
-    "version": "1.4.0",
+    "name": "Open in VSCode (pmunin)",
+    "version": "1.4.1",
     "description": "Open Github and Gitlab links in VSCode",
     "action": {
         "default_icon": "icons/icon19.png",
-        "default_title": "Open in VSCode"
+        "default_title": "Open in VSCode (pmunin)"
     },
     "author": "Domenico Gemoli",
     "permissions": [
