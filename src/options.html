@@ -37,6 +37,14 @@
                 <small id="basePathHelp" class="form-text text-muted"><b class="text-danger">Required!</b> Full path to a directory that contains all of your cloned repositories (eg. <code>/Users/bob/git</code>).</small>
             </div>
             <div class="form-group">
+                <label for="basePathFormat">Base path format</label>
+                <select type="radio" class="form-control" id="basePathFormat" aria-describedby="basePathFormatHelp">
+                    <option value="{basePath}/{repoName}">{basePath}/{repoName}</option>
+                    <option value="{basePath}/{repoPath}/{repoName}">{basePath}/{repoPath}/{repoName}</option>
+                </select>
+                <small id="basePathFormatHelp" class="form-text text-muted">Should local path include the repository's user/org name?</small>
+            </div>
+            <div class="form-group">
                 <label for="remoteHost">Remote Host</label>
                 <input type="text" class="form-control" id="remoteHost" aria-describedby="remoteHostHelp">
                 <small id="remoteHostHelp" class="form-text text-muted">Only necessary for <a href="https://code.visualstudio.com/docs/remote/remote-overview" target="_blank">Remote Development</a>. Leave empty if your repositories are on your local machine.</small>

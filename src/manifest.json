@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Open in VSCode",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "Open Github and Gitlab links in VSCode",
     "action": {
         "default_icon": "icons/icon19.png",

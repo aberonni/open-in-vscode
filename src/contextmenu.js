@@ -1,4 +1,4 @@
-const PULL_REQUEST_PATH_REGEXP = /.+\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
+const PULL_REQUEST_PATH_REGEXP = /\/?(.*)\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
 
 class OptionValidationError extends Error {
     constructor(message) {
@@ -11,6 +11,7 @@ async function getOptions() {
     const options = await chrome.storage.sync.get({
         remoteHost: '',
         basePath: '',
+        basePathFormat: '{basePath}/{repoName}',
         insidersBuild: false,
         debug: false,
     });
@@ -23,9 +24,9 @@ async function getOptions() {
 }
 
 function getVscodeLink({
-    repo, file, isFolder, line,
+    repoPath, repo, file, isFolder, line,
 }, {
-    remoteHost, insidersBuild, basePath, debug,
+    remoteHost, insidersBuild, basePath, basePathFormat, debug,
 }) {
     let vscodeLink = insidersBuild
         ? 'vscode-insiders'
@@ -45,7 +46,15 @@ function getVscodeLink({
         vscodeLink += '/';
     }
 
-    vscodeLink += `${basePath}/${repo}/${file}`;
+    switch (basePathFormat) {
+        case '{basePath}/{repoPath}/{repoName}':
+            vscodeLink += `${basePath}/${repoPath}/${repo}/${file}`;
+            break;
+        case '{basePath}/{repoName}':
+        default:
+            vscodeLink += `${basePath}/${repo}/${file}`;
+            break;
+    }
 
     // opening a folder and not a file
     if (isFolder) {
@@ -74,7 +83,8 @@ function parseLink(linkUrl, selectionText, pageUrl) {
 
     if (isPR(url.pathname)) {
         const pathInfo = PULL_REQUEST_PATH_REGEXP.exec(path);
-        const repo = pathInfo[1];
+        const repoPath = pathInfo[1];
+        const repo = pathInfo[2];
         const isFolder = false;
         const file = selectionText;
         let line = null;
@@ -82,6 +92,7 @@ function parseLink(linkUrl, selectionText, pageUrl) {
             line = pageUrl.replace(linkUrl, '').replace('R', '').replace('L', '');
         }
         return {
+            repoPath,
             repo,
             file,
             isFolder,
@@ -89,7 +100,7 @@ function parseLink(linkUrl, selectionText, pageUrl) {
         };
     }
 
-    const pathRegexp = /.+\/([^/]+)\/(blob|tree)\/[^/]+\/(.*)/;
+    const pathRegexp = /\/?(.*)\/([^/]+)\/(blob|tree)\/[^/]+\/(.*)/;
 
     if (!pathRegexp.test(path)) {
         throw new Error(`Invalid link. Could not extract info from: ${path}.`);
@@ -97,9 +108,10 @@ function parseLink(linkUrl, selectionText, pageUrl) {
 
     const pathInfo = pathRegexp.exec(path);
 
-    const repo = pathInfo[1];
-    const isFolder = pathInfo[2] === 'tree';
-    const file = pathInfo[3];
+    const repoPath = pathInfo[1];
+    const repo = pathInfo[2];
+    const isFolder = pathInfo[3] === 'tree';
+    const file = pathInfo[4];
 
     let line;
 
@@ -108,6 +120,7 @@ function parseLink(linkUrl, selectionText, pageUrl) {
     }
 
     return {
+        repoPath,
         repo,
         file,
         isFolder,
