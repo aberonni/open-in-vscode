@@ -1,4 +1,4 @@
-const PULL_REQUEST_PATH_REGEXP = /.+\/([^/]+)\/(pull)\/[^/]+\/(.*)/;
+const PULL_REQUEST_PATH_REGEXP = /.+\/([^\/-][^\/]*)\/(?:-\/)?(pull|merge_requests)\/[^\/]+\/(.*)/;
 
 class OptionValidationError extends Error {
     constructor(message) {
