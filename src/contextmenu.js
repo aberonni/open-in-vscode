@@ -89,7 +89,7 @@ function parseLink(linkUrl, selectionText, pageUrl) {
         };
     }
 
-    const pathRegexp = /.+\/([^/]+)\/(blob|tree)\/[^/]+\/(.*)/;
+    const pathRegexp = /.+\/([^\/-][^\/]*)\/(?:-\/)?(tree|blob)\/[^\/]+\/(.*)/;
 
     if (!pathRegexp.test(path)) {
         throw new Error(`Invalid link. Could not extract info from: ${path}.`);
