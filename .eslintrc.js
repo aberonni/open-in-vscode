@@ -14,6 +14,15 @@ module.exports = {
       env: { jest: true, node: true },
     },
     {
+      files: ['tests-e2e/**/*.js'],
+      env: { node: true, browser: true },
+      rules: {
+        'max-len': ['off'], // relax for test commentary
+        'no-underscore-dangle': 'off',
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
+    {
       files: ['**/src/**/*.js'],
       env: { browser: true, serviceworker: true },
       globals: {

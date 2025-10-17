@@ -3,14 +3,17 @@
   "version": "1.5.0",
   "description": "Open Github and Gitlab links in VSCode",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "jest",
+    "test:unit:watch": "jest --watch",
+    "test:e2e": "playwright test"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@playwright/test": "^1.48.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",

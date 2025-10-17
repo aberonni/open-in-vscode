@@ -4,3 +4,5 @@ node_modules
 .vscode
 src.zip
 coverage/
+.pw-user-data/
+test-results/

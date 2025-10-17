@@ -79,6 +79,35 @@ npm run lint
 
 There is currently no build step; the source under `src/` is used directly by Chrome. If a build is introduced (e.g. bundling, TypeScript), update the CI workflow accordingly.
 
+### End-to-End (Integration) Test with Playwright
+
+Playwright is configured to perform a minimal integration test that:
+
+1. Launches Chromium with the extension loaded.
+2. Opens the options page and saves a fake base path.
+3. Navigates to this GitHub repository.
+4. Simulates the context-menu action by stubbing `window.open` and invoking the equivalent logic.
+5. Asserts that a `vscode://` (or `vscode-insiders://`) style URL matching the expected repository path would be opened.
+
+Run the E2E test (headed, because Chrome extensions are not supported in headless Chromium yet):
+
+```bash
+npm run test:e2e
+```
+
+To run all unit + e2e tests together:
+
+```bash
+npm run test:all
+```
+
+Notes / Limitations:
+
+- The actual selection of the native Chrome context menu item cannot be automated; the test simulates the final effect.
+- Opening a `vscode://` URL is intercepted (stubbed) so no external application is launched.
+- Network access to github.com is required.
+- If running in CI without network, you can set `CI_OFFLINE=1` to skip the e2e test.
+
 ## License
 
 Licensed under the [MIT License](https://github.com/aberonni/open-in-vscode/blob/master/LICENSE).
