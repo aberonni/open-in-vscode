@@ -3,14 +3,30 @@
   "version": "1.4.0",
   "description": "Open Github and Gitlab links in VSCode",
   "scripts": {
-    "test": "eslint **/*.js"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^29.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aberonni/open-in-vscode.git"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["text", "lcov"],
+    "testMatch": ["**/tests/**/*.test.js"],
+    "moduleFileExtensions": ["js", "json"],
+    "verbose": true
   }
 }

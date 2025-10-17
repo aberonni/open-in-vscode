@@ -4,6 +4,8 @@
 
 ![Screenshot](screenshot.png)
 
+[![CI](https://github.com/aberonni/open-in-vscode/actions/workflows/ci.yml/badge.svg)](https://github.com/aberonni/open-in-vscode/actions/workflows/ci.yml)
+
 ## Installation
 
 Just [install from the Chrome Web Store](https://chrome.google.com/webstore/detail/open-in-vscode/pfakkjlkpobjeghlgipljkjmbgcanpji). Once you have installed, make sure to configure the extension in the options page.
@@ -26,7 +28,7 @@ Tested with the following websites:
 
 It might work on some other websites as well (no guarantee), if you do discover that it works on other websites please [let me know](https://github.com/aberonni/open-in-vscode/issues/new) so I can add it to the list!
 
-## All I see is a blank page!
+## All I see is a blank page
 
 This could be happening for numerous reasons. Make sure you have set the options correctly in the options page.
 If you want, you can check what URL the extension is trying to open by enabling the debug mode in the options.
@@ -35,6 +37,47 @@ You might want to [check out how VSCode handles links](https://code.visualstudio
 ## Feedback
 
 If you are having any issues, or would like to request a new feature, don't hesitate to [open an issue on github](https://github.com/aberonni/open-in-vscode/issues)!
+
+## Development
+
+### Prerequisites
+
+- Node.js (>= 18 recommended)
+- npm
+
+### Setup
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/aberonni/open-in-vscode.git
+cd open-in-vscode
+npm ci
+```
+
+### Running Tests
+
+Jest is configured to collect coverage automatically.
+
+```bash
+npm test
+```
+
+For watch mode while iterating:
+
+```bash
+npm run test:watch
+```
+
+### Linting
+
+```bash
+npm run lint
+```
+
+### Building the Extension
+
+There is currently no build step; the source under `src/` is used directly by Chrome. If a build is introduced (e.g. bundling, TypeScript), update the CI workflow accordingly.
 
 ## License
 
