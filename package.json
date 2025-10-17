@@ -1,6 +1,6 @@
 {
   "name": "open-in-vscode",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Open Github and Gitlab links in VSCode",
   "scripts": {
     "test": "jest",
@@ -24,9 +24,17 @@
     "testEnvironment": "node",
     "collectCoverage": true,
     "coverageDirectory": "coverage",
-    "coverageReporters": ["text", "lcov"],
-    "testMatch": ["**/tests/**/*.test.js"],
-    "moduleFileExtensions": ["js", "json"],
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
     "verbose": true
   }
 }
